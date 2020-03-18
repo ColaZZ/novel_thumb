@@ -22,7 +22,7 @@ class NovelThumbPipeline(object):
         chapter_url_base = temp[1] if temp else "temp"
         cur_path = "/volume/novel_context" + os.path.sep + allowed_domain
         # cur_path = "/mnt/d"
-        target_path = cur_path + os.path.sep + chapter_url_base
+        target_path = cur_path + os.path.sep + "thumb"
         filename_path = cur_path + os.path.sep + \
                         "thumb" + os.path.sep + chapter_url_base + ".jpg"
 
