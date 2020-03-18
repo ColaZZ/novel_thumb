@@ -72,7 +72,12 @@ class NovelThumb(scrapy.Spider):
         menu_list_group = [menu_list[i:i + 4] for i in range(0, len(menu_list), 4)]
 
         meta = response.meta 
-        meta["thumb"] = head_list[1]
+        if len(head_list) >= 2:
+            meta["thumb"] = head_list[1]
+        else:
+            print("head_list", head_list)
+            meta["thumb"] = ""
+
         
         item = NovelThumbItem()
         item['category_id'] = response.meta.get("category_id", 0)

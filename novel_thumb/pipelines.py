@@ -8,10 +8,19 @@
 import os 
 
 import requests
+import pymysql
 
 
 class NovelThumbPipeline(object):
-    # def __init__(self):
+    def __init__(self):
+        # self.conn = pymysql.connect(host='127.0.0.1', user='root',
+        #                             passwd='123456', db='distributed_spider', charset='utf8')
+        self.conn = pymysql.connect(host='47.244.114.115', user='root', port=3306,
+                                    passwd='Fik2mcKWThRbEFyx', db='distributed_spider', charset='utf8')
+        self.cur = self.conn.cursor()
+
+
+
     def process_item(self, item, spider):
         category_id = item.get('category_id', '')
         article_url_base = item.get('article_url_base', '')
@@ -26,13 +35,24 @@ class NovelThumbPipeline(object):
         filename_path = cur_path + os.path.sep + \
                         "thumb" + os.path.sep + chapter_url_base + ".jpg"
 
+        if thumb:
+            thumb_path = filename_path
+        else:
+            thumb_path = ""
+
+
+        sql = "update articles set thumb=%s where pinyin=%s"
+        self.cur.execute(sql, (filename_path, chapter_url_base))
+        self.cur.connection.commit()
+
+
         r = requests.get(thumb,stream=True)
 
-        if not os.path.exists(target_path):
-            os.makedirs(target_path)
-        with open(filename_path, 'wb') as f:
-            for chunk in r.iter_content():
-                f.write(chunk)
+        if r.status_code != 404 and thumb_path:
+            if not os.path.exists(target_path):
+                os.makedirs(target_path)
+            with open(filename_path, 'wb') as f:
+                for chunk in r.iter_content():
+                    f.write(chunk)
 
-        # print(filename_path)
         return item
