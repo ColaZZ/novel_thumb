@@ -79,6 +79,6 @@ class NovelThumb(scrapy.Spider):
         item['article_url_base'] = response.meta.get("article_url_base", " ")
         item['thumb'] = response.meta.get("thumb", " ")
         item['allowed_domain'] = self.allowed_domains[0]
-        print(item['thumb'])
-        # yield item 
+        # print(item['thumb'])
+        yield item 
 

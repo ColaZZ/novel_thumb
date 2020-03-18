@@ -21,6 +21,7 @@ class NovelThumbPipeline(object):
         temp = article_url_base.split('/')
         chapter_url_base = temp[1] if temp else "temp"
         cur_path = "/volume/novel_context" + os.path.sep + allowed_domain
+        # cur_path = "/mnt/d"
         target_path = cur_path + os.path.sep + chapter_url_base
         filename_path = cur_path + os.path.sep + \
                         "thumb" + os.path.sep + chapter_url_base + ".jpg"
@@ -32,4 +33,6 @@ class NovelThumbPipeline(object):
         with open(filename_path, 'wb') as f:
             for chunk in r.iter_content():
                 f.write(chunk)
+
+        # print(filename_path)
         return item
